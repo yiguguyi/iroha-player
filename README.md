@@ -9,6 +9,8 @@
 - 罗马音：iro wa nioedo chirinuru wo
 - 出处：幻想万华镜
 
+🔗 在线访问：https://yiguguyi.github.io/iroha-player/
+
 ## 作者信息
 网站制作：一咕咕一
 
