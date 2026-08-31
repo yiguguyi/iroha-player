@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>色は匂へど散りぬるを</title>
-  <!-- 网站图标：国内外链 -->
   <link rel="icon" type="image/png" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEaNE1qlTVR_qNIZGXYgvCUr29HugQ5CwACVi8AAljgqVTgOsvrtSF1fj0E.png">
   <style>
     * {
@@ -12,7 +11,6 @@
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       min-height: 100vh;
       background: url('https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEaNFVqlTWQ2yQeS7RXDDyn3S-3bGjNiwACXy8AAljgqVQxk0MYJ751LD0E.png') center / cover no-repeat fixed;
@@ -24,7 +22,6 @@
       padding: 12px;
       overflow: hidden;
     }
-
     h1 {
       font-size: clamp(20px, 5vw, 28px);
       font-weight: 500;
@@ -34,7 +31,6 @@
       text-align: center;
       letter-spacing: 2px;
     }
-
     h2 {
       font-size: clamp(14px, 3.5vw, 20px);
       font-weight: 400;
@@ -45,12 +41,10 @@
       letter-spacing: 1.5px;
       opacity: 0.92;
     }
-
     .lyric-box {
       width: 100%;
       max-width: 480px;
       height: clamp(260px, 58vh, 360px);
-      /* 提升不透明度：从0.22改为0.35，兼顾毛玻璃质感与文字清晰度 */
       background: rgba(255, 255, 255, 0.35);
       border-radius: 16px;
       padding: 16px 12px;
@@ -60,19 +54,15 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       margin-bottom: 16px;
     }
-
     .lyric-scroll {
       height: 100%;
-      /* 优化滚动缓动：更灵动丝滑的过渡曲线 */
       transition: transform 0.38s cubic-bezier(0.33, 1, 0.68, 1);
     }
-
     .lyric-line {
       text-align: center;
       transition: all 0.3s ease;
       margin-bottom: 8px;
     }
-
     .lyric-ja {
       display: block;
       line-height: 1.6;
@@ -80,7 +70,6 @@
       color: #222;
       text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
     }
-
     .lyric-zh {
       display: block;
       line-height: 1.4;
@@ -90,19 +79,15 @@
       margin-top: 2px;
       text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
     }
-
     .lyric-line.active .lyric-ja {
       color: #000;
       font-size: clamp(16px, 3.4vw, 19px);
       font-weight: 500;
     }
-
     .lyric-line.active .lyric-zh {
       color: #333;
       opacity: 1;
     }
-
-    /* 控制区：大屏左右布局 */
     .control-area {
       width: 100%;
       max-width: 480px;
@@ -113,7 +98,6 @@
       margin-bottom: 16px;
       gap: 16px;
     }
-
     .cd-disc {
       width: clamp(64px, 14vw, 80px);
       height: clamp(64px, 14vw, 80px);
@@ -124,16 +108,13 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       flex-shrink: 0;
     }
-
     .cd-disc.playing {
       animation: rotate 8s linear infinite;
     }
-
     @keyframes rotate {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
-
     #playBtn {
       padding: 10px 32px;
       font-size: clamp(14px, 3vw, 15px);
@@ -151,7 +132,6 @@
       letter-spacing: 1px;
       flex-shrink: 0;
     }
-
     #playBtn:hover {
       background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%);
       transform: translateY(-1px);
@@ -159,40 +139,50 @@
         0 6px 16px rgba(0, 0, 0, 0.18),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
-
     #playBtn:active {
       transform: scale(0.97);
       box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.15),
         inset 0 1px 2px rgba(0, 0, 0, 0.1);
     }
-
     .progress-wrap {
       width: 100%;
       max-width: 480px;
+      height: 14px;
+      padding: 4px 0;
+      cursor: pointer;
+      position: relative;
+      touch-action: none;
+    }
+    .progress-track {
+      width: 100%;
       height: 6px;
       border-radius: 3px;
       background: rgba(255, 255, 255, 0.3);
-      overflow: hidden;
       position: relative;
     }
-
     .progress-bar {
       position: absolute;
       left: 0;
       top: 0;
       height: 100%;
-      width: 0%;
-      background: rgba(255, 255, 255, 0.9);
       border-radius: 3px;
-      transition: width 0.1s linear;
+      background: rgba(255, 255, 255, 0.9);
     }
-
+    .progress-thumb {
+      position: absolute;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      margin-top: -8px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+      pointer-events: none;
+    }
     audio {
       display: none;
     }
-
-    /* 手机小屏幕：控制区改为上下居中堆叠 */
     @media (max-width: 360px) {
       .control-area {
         flex-direction: column;
@@ -207,26 +197,23 @@
 <body>
   <h1>色は匂へど散りぬるを</h1>
   <h2>花儿告诉我，生之即有罪</h2>
-
   <div class="lyric-box">
     <div class="lyric-scroll" id="lyricScroll"></div>
   </div>
-
   <div class="control-area">
     <button id="playBtn">播放</button>
     <div class="cd-disc" id="cdDisc"></div>
   </div>
-
-  <div class="progress-wrap">
-    <div class="progress-bar" id="progressBar"></div>
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-track">
+      <div class="progress-bar" id="progressBar"></div>
+      <div class="progress-thumb" id="progressThumb"></div>
+    </div>
   </div>
-
-  <audio id="audio" src="https://videotourl.com/audio/1788164074366-cc0c65a0-825b-4ea4-af93-4e4d0d7dc389.mp3">
+  <audio id="audio" preload="none" src="https://videotourl.com/audio/1788164074366-cc0c65a0-825b-4ea4-af93-4e4d0d7dc389.mp3">
     您的浏览器不支持音频播放
   
-
   <script>
-    // 歌词数据：时间轴 + 日文原文 + 中文诗意翻译
     const lyricData = [
       { time: 1.50,  ja: "色は匂へど いつか散りぬるを", zh: "繁花纵有凝香意 终有飘零散落时" },
       { time: 8.30,  ja: "さ迷う事さえ 許せなかった…", zh: "连这份彷徨的心 都未曾被容许…" },
@@ -253,15 +240,16 @@
       { time: 196.80, ja: "刻まれたのは 幾許の時だけ", zh: "铭刻于心的 不过寥寥数段时光" },
       { time: 203.75, ja: "忘れてしまう 儚き此の世界で", zh: "在这虚幻世间 终将被遗忘殆尽" }
     ];
-
     const scrollEl = document.getElementById('lyricScroll');
     const audio = document.getElementById('audio');
     const playBtn = document.getElementById('playBtn');
     const cdDisc = document.getElementById('cdDisc');
     const progressBar = document.getElementById('progressBar');
+    const progressThumb = document.getElementById('progressThumb');
+    const progressWrap = document.getElementById('progressWrap');
     let activeIndex = -1;
-
-    // 渲染双语歌词
+    let isDragging = false;
+    let dragRatio = 0;
     function renderLyrics() {
       scrollEl.innerHTML = lyricData
         .map(item => `
@@ -272,8 +260,6 @@
         `)
         .join('');
     }
-
-    // 实时更新歌词高亮与滚动
     function updateLyric() {
       const current = audio.currentTime;
       let index = -1;
@@ -281,12 +267,10 @@
         if (current >= lyricData[i].time) index = i;
         else break;
       }
-
       if (index !== activeIndex) {
         activeIndex = index;
         const allLines = document.querySelectorAll('.lyric-line');
         allLines.forEach(line => line.classList.remove('active'));
-
         if (index >= 0 && allLines[index]) {
           allLines[index].classList.add('active');
           const boxHeight = document.querySelector('.lyric-box').clientHeight;
@@ -298,12 +282,55 @@
         }
       }
     }
-
     function updateProgress() {
+      if(isDragging) return;
       const percent = (audio.currentTime / audio.duration) * 100 || 0;
       progressBar.style.width = percent + '%';
+      progressThumb.style.left = `calc(${percent}% - 8px)`;
     }
-
+    function setDragVisual(clientX){
+      const rect = progressWrap.getBoundingClientRect();
+      let x = clientX - rect.left;
+      dragRatio = Math.max(0, Math.min(1, x / rect.width));
+      const percent = dragRatio * 100;
+      progressBar.style.width = percent + '%';
+      progressThumb.style.left = `calc(${percent}% - 8px)`;
+    }
+    function commitSeek(){
+      if(!audio.duration) return;
+      audio.currentTime = dragRatio * audio.duration;
+      updateLyric();
+    }
+    progressWrap.addEventListener('mousedown', (e)=>{
+      isDragging = true;
+      setDragVisual(e.clientX);
+    });
+    window.addEventListener('mousemove', (e)=>{
+      if(!isDragging) return;
+      setDragVisual(e.clientX);
+    });
+    window.addEventListener('mouseup', ()=>{
+      if(isDragging){
+        commitSeek();
+      }
+      isDragging = false;
+    });
+    progressWrap.addEventListener('touchstart', (e)=>{
+      isDragging = true;
+      setDragVisual(e.touches[0].clientX);
+      e.preventDefault();
+    });
+    window.addEventListener('touchmove', (e)=>{
+      if(!isDragging) return;
+      setDragVisual(e.touches[0].clientX);
+      e.preventDefault();
+    });
+    window.addEventListener('touchend', ()=>{
+      if(isDragging){
+        commitSeek();
+      }
+      isDragging = false;
+    });
     function togglePlay() {
       if (audio.paused) {
         audio.play().catch(() => {});
@@ -311,7 +338,6 @@
         audio.pause();
       }
     }
-
     function syncPlayState() {
       if (audio.paused) {
         playBtn.textContent = '播放';
@@ -321,18 +347,14 @@
         cdDisc.classList.add('playing');
       }
     }
-
-    // 播放结束后完整重置所有状态
     function handlePlayEnd() {
       syncPlayState();
       activeIndex = -1;
       progressBar.style.width = '0%';
+      progressThumb.style.left = '-8px';
       scrollEl.style.transform = 'translateY(0)';
-      const allLines = document.querySelectorAll('.lyric-line');
-      allLines.forEach(line => line.classList.remove('active'));
+      document.querySelectorAll('.lyric-line').forEach(line => line.classList.remove('active'));
     }
-
-    // 初始化
     renderLyrics();
     audio.addEventListener('timeupdate', () => {
       updateLyric();
