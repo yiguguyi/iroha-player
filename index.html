@@ -1,251 +1,322 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-    <script>
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-            }
-        });
-    </script>
-    <script>
-        document.addEventListener('keydown', function (event) {
-            if (event.ctrlKey && event.key === 'u') {
-                event.preventDefault();
-            }
-        });
-    </script>
-    <script>
-        document.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
-        });
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>色は匂へど散りぬるを</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        document.addEventListener('keydown', function (e) {
-            if (e.keyCode === 123) {
-                e.preventDefault();
-            }
-        });
-    </script>
-    <meta charset="UTF-8">
-    <title>纪念UKE！</title>
-    <link rel="icon" href="https://cdn.luogu.com.cn/upload/image_hosting/it2ueqmo.png" type="image/png">
-    <script>
-        var n = 0;
-        var m = 0;
-        var jia = 1;
-        var ne = 1;
-        function kk() {
-            alert("Error!");
-        }
-        function tishi() {
-            alert("如果看不到保存和加载按钮，请向下划哦。");
-        }
-        function zhaomu() {
-            if (m < 1) {
-                kk(); return;
-            }
-            m--;
-            jia += 2;
-            document.getElementById("木鱼加成").innerHTML = "木鱼加成：" + jia;
-            document.getElementById("信仰显示").innerHTML = "信仰：" + m;
-        }
-        function auto1() {
-            while (m >= 1) changetogongde();
-        }
-        function auto2() {
-            while (n >= 50000) changetoxinyang();
-        }
-        function auto3() {
-            while (m >= 1)
-                zhaomu();
-        }
-        function changetogongde() {
-            if (m < 1) { kk(); return; }
-            m--;
-            n += 50000;
-            document.getElementById("功德显示").innerHTML = "功德：" + n;
-            document.getElementById("信仰显示").innerHTML = "信仰：" + m;
-        }
-        function changetoxinyang() {
-            if (n < 50000) { kk(); return; }
-            n -= 50000;
-            m++;
-            document.getElementById("功德显示").innerHTML = "功德：" + n;
-            document.getElementById("信仰显示").innerHTML = "信仰：" + m;
-        }
-        function muyu() {
-            n += jia;
-            document.getElementById("功德显示").innerHTML = "功德：" + n;
-        }
-    </script>
-    <script>
-        function SAVE() {
-            localStorage.setItem("nn", n);
-            localStorage.setItem("mm", m);
-            localStorage.setItem("jiajia", jia);
-            localStorage.setItem("nene", 123);
-        }
-        function READ() {
-            n = localStorage.getItem("nn");
-            m = localStorage.getItem("mm");
-            jia = localStorage.getItem("jiajia");
-        }
-        function LAOD() {
-            READ();
-            n++;
-            n--;
-            m++;
-            m--;
-            jia++;
-            jia--;
-            if (jia == 0)
-                jia = 1;
-            document.getElementById("功德显示").innerHTML = "功德：" + n;
-            document.getElementById("信仰显示").innerHTML = "信仰：" + m;
-            document.getElementById("木鱼加成").innerHTML = "木鱼加成：" + jia;
-        }
-        function NE() {
-            ne = localStorage.getItem("nene");
-        }
-    </script>
-    <script>
-        var sum__ = 0;
-        function dutumuyu() {
-            var rand__ = Math.floor(Math.random() * (n * 2 + 1)) - n;
-            if (rand__ < 0) {
-                rand__ += sum__;
-            }
-            if (sum__ > 10000) {
-                rand__ = -n;
-                sum__ = 0;
-            }
-            else if (sum__ > 1000) {
-                rand__ = Math.floor(Math.random() * (0 - n + 1)) + n;
-                sum__ = 0;
-            }
-            n += rand__;
-            SAVE();
-            document.getElementById("功德显示").innerHTML = "功德：" + n;
-            if (rand__ > 0) {
-                sum__ += rand__;
-            } else {
-                sum__ = 0;
-            }
-        }
-    </script>
+    body {
+      min-height: 100vh;
+      background: url('./pic.png') center/cover no-repeat fixed;
+      font-family: "Noto Sans JP", "Hiragino Sans", "Meiryo", system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 500;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+      margin-bottom: 12px;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 400;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      margin-bottom: 24px;
+      text-align: center;
+      letter-spacing: 1.5px;
+      opacity: 0.92;
+    }
+
+    /* 半透明歌词容器 */
+    .lyric-box {
+      width: 100%;
+      max-width: 480px;
+      height: 320px;
+      background: rgba(255, 255, 255, 0.22);
+      border-radius: 16px;
+      padding: 20px 16px;
+      overflow: hidden;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      margin-bottom: 24px;
+    }
+
+    .lyric-scroll {
+      height: 100%;
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .lyric-line {
+      text-align: center;
+      line-height: 2.3;
+      font-size: 16px;
+      color: #222;
+      transition: all 0.3s ease;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+    }
+
+    .lyric-line.active {
+      color: #000;
+      font-size: 19px;
+      font-weight: 500;
+    }
+
+    /* 控制区：左按钮 + 右光盘，水平布局 */
+    .control-area {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+      margin-bottom: 16px;
+    }
+
+    /* 圆环光盘：内孔15%，播放旋转 */
+    .cd-disc {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: url('./paint.png') center/cover no-repeat;
+      -webkit-mask-image: radial-gradient(circle, transparent 15%, black 16%);
+      mask-image: radial-gradient(circle, transparent 15%, black 16%);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .cd-disc.playing {
+      animation: rotate 8s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* 豪华渐变播放按钮 */
+    #playBtn {
+      padding: 10px 32px;
+      font-size: 15px;
+      font-weight: 500;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(180deg, #ffffff 0%, #e8e8e8 100%);
+      color: #222;
+      cursor: pointer;
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      transition: all 0.2s ease;
+      font-family: inherit;
+      letter-spacing: 1px;
+    }
+
+    #playBtn:hover {
+      background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%);
+      transform: translateY(-1px);
+      box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    #playBtn:active {
+      transform: scale(0.97);
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.15),
+        inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 底部水平进度条，不可拖动 */
+    .progress-wrap {
+      width: 100%;
+      max-width: 480px;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 3px;
+      transition: width 0.1s linear;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
 </head>
-
 <body>
-    <script>NE(); if (ne != 123) tishi()</script>
-    <h1>纪念UKE！</h1>
-    <a href="https://sm.ms/image/A5sRKWSVI3Dk1mn" target="_blank"><img src="https://s2.loli.net/2025/07/30/A5sRKWSVI3Dk1mn.png" ></a>
-    <br>
-    <p>↑（纪念UKE！）<strong>注：为了弘扬愿赌服输的精神，赌徒木鱼加了自动保存。</strong><br>因为一些贪心哥的行为，导致作者不得不在2024年10月6日重置所有存档，对此表示深深的歉意<br><a
-            href="https://www.luogu.com.cn/discuss/61884">说句闲话：研究珂学的最好方法是</a></p>
-    <br>
-    <p>敲木鱼来纪念UKE吧 </p>
-    <br>
-    <button onclick="muyu()">木鱼（要慢慢按，不然加不了哦！）</button>
-    <button onclick="dutumuyu()">赌徒木鱼（小心哦！）</button>
-    <button onclick="zhaomu()">招募信徒（1信仰，升级普通木鱼）</button>
-    <button onclick="auto3()">自动招募信徒</button>
-    <p id="功德显示">功德：0<br></p>
-    <p id="信仰显示">信仰：0</p>
-    <p id="木鱼加成">木鱼加成：1</p>
-    <button onclick="changetogongde()">1信仰->50000功德</button>
-    <button onclick="changetoxinyang()">50000功德->1信仰</button>
-    <button onclick="auto1()">自动兑换成功德</button>
-    <button onclick="auto2()">自动兑换成信仰</button>
-    <br>
-    <button onclick="SAVE()">保存游戏</button>
-    <button onclick="LAOD()">加载游戏</button>
-    <script>
-            (function () {
-                var a_idx = 0;
-                window.onclick = function (event) {
-                    var a = new Array("❤You will AK IOI!❤", "❤You will AK CSP-S!❤", "❤You will AK NOI!❤", "❤You will AK NOIP!❤", "❤You will AK CSP-J!❤", "❤You will AK USACO❤", "❤You will AK WC!❤", "❤You will AK CTSC!❤", "❤You will AK JOI!❤", "❤You will AK APIO!❤", "❤You are a good ACMer!❤", "❤You are a good OIer!❤");
-                    var heart = document.createElement("b");
-                    heart.onselectstart = new Function('event.returnValue=false');
-                    document.body.appendChild(heart).innerHTML = a[a_idx];
-                    a_idx = (a_idx + 1) % a.length;
-                    heart.style.cssText = "position: fixed;left:-100%;";
-                    var f = 16,
-                        x = event.clientX - f / 2,
-                        y = event.clientY - f,
-                        c = randomColor(),
-                        a = 1,
-                        s = 1.2;
+  <h1>色は匂へど散りぬるを</h1>
+  <h2>花儿告诉我，生之即有罪</h2>
 
-                    var timer = setInterval(function () {
-                        if (a <= 0) {
-                            document.body.removeChild(heart);
-                            clearInterval(timer);
-                        } else {
-                            heart.style.cssText = "font-size:16px;cursor: default;position: fixed;color:" +
-                                c + ";left:" + x + "px;top:" + y + "px;opacity:" + a + ";transform:scale(" +
-                                s + ");";
+  <div class="lyric-box">
+    <div class="lyric-scroll" id="lyricScroll"></div>
+  </div>
 
-                            y--;
-                            a -= 0.016;
-                            s += 0.002;
-                        }
-                    }, 15)
+  <div class="control-area">
+    <button id="playBtn">播放</button>
+    <div class="cd-disc" id="cdDisc"></div>
+  </div>
 
-                }
-                function randomColor() {
+  <div class="progress-wrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
 
-                    return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math
-                        .random() * 255)) + ")";
+  <audio id="audio" src="./bgm.mp3">
+    您的浏览器不支持音频播放
+  
 
-                }
-            }());
-    </script>
-    <script>
-        !function () {
-            function n(n, e, t) {
-                return n.getAttribute(e) || t
-            }
+  <script>
+    // 校准版LRC歌词时间轴
+    const lrcContent = `[00:00.00]
+[00:01.50]色は匂へど いつか散りぬるを
+[00:08.30]さ迷う事さえ 許せなかった…
+[00:17.64]「色は匂へど散りぬるを」
+[00:32.06]咲き誇る花は何時か
+[00:38.15]教えてくれた 生きるだけでは罪と
+[00:45.91]離れられない 離せはしないと
+[00:52.89]抱く思いは 心を躍らせるばかり
+[01:01.14]色は匂へど いつか散りぬるを
+[01:07.90]彷徨う事さえ 許せなかった…
+[01:16.40]届かぬ夢と 知っていたのに
+[01:23.35]願ってしまう 儚き此の世界で
+[01:31.20]移ろう日々と 消えゆく望み
+[01:38.14]何もかもが 儚く見えて
+[01:45.10]許してくれた 求める者の欲を
+[01:58.96]健気に咲いた 刹那の美しさ
+[02:05.97]それを知るには 遅すぎたのかもしれない…
+[02:12.43]色は匂へど いつか散りぬるを
+[02:19.15]アナタのすべてに 幼く委ねたい…
+[02:26.17]許せぬ優しさと 揺れる独占欲は
+[02:33.06]秤にかけれぬ 我儘な愛
+[03:02.82]色は匂へど すべて散りぬるを
+[03:09.57]短き記憶に 溢れる想い
+[03:16.80]刻まれたのは 幾許の時だけ
+[03:23.75]忘れてしまう 儚き此の世界で`;
 
-            function e(n) {
-                return document.getElementsByTagName(n)
-            }
+    // 解析LRC格式
+    function parseLrc(lrcStr) {
+      const lineList = lrcStr.split('\n');
+      const timeReg = /\[(\d{2}):(\d{2})\.(\d{2})\]/;
+      const result = [];
 
-            function t() {
-                var t = e("script"), o = t.length, i = t[o - 1];
-                return { l: o, z: n(i, "zIndex", -1), o: n(i, "opacity", .5), c: n(i, "color", "0,0,0"), n: n(i, "count", 99) }
-            }
+      lineList.forEach(line => {
+        const match = line.match(timeReg);
+        if (match) {
+          const min = parseInt(match[1]);
+          const sec = parseInt(match[2]);
+          const ms = parseInt(match[3]);
+          const totalTime = min * 60 + sec + ms / 100;
+          const text = line.replace(timeReg, '').trim();
+          if (text) result.push({ time: totalTime, text: text });
+        }
+      });
 
-            function o() {
-                a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth, c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-            }
+      return result.sort((a, b) => a.time - b.time);
+    }
 
-            function i() {
-                r.clearRect(0, 0, a, c);
-                var n, e, t, o, m, l;
-                s.forEach(function (i, x) {
-                    for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e], null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
-                }), x(i)
-            }
+    const lyricData = parseLrc(lrcContent);
+    const scrollEl = document.getElementById('lyricScroll');
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+    const cdDisc = document.getElementById('cdDisc');
+    const progressBar = document.getElementById('progressBar');
+    let activeIndex = -1;
 
-            var a, c, u, m = document.createElement("canvas"), d = t(), l = "c_n" + d.l, r = m.getContext("2d"),
-                x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (n) {
-                    window.setTimeout(n, 1e3 / 45)
-                }, w = Math.random, y = { x: null, y: null, max: 2e4 };
-            m.id = l, m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o, e("body")[0].appendChild(m), o(), window.onresize = o, window.onmousemove = function (n) {
-                n = n || window.event, y.x = n.clientX, y.y = n.clientY
-            }, window.onmouseout = function () {
-                y.x = null, y.y = null
-            };
-            for (var s = [], f = 0; d.n > f; f++) {
-                var h = w() * a, g = w() * c, v = 2 * w() - 1, p = 2 * w() - 1;
-                s.push({ x: h, y: g, xa: v, ya: p, max: 6e3 })
-            }
-            u = s.concat([y]), setTimeout(function () {
-                i()
-            }, 100)
-        }();
-    </script>
-    <canvas></canvas>
+    // 渲染歌词DOM
+    function renderLyrics() {
+      scrollEl.innerHTML = lyricData
+        .map(item => `<div class="lyric-line">${item.text}</div>`)
+        .join('');
+    }
+
+    // 实时更新歌词高亮与滚动
+    function updateLyric() {
+      const current = audio.currentTime;
+      let index = -1;
+
+      for (let i = 0; i < lyricData.length; i++) {
+        if (current >= lyricData[i].time) index = i;
+        else break;
+      }
+
+      if (index !== activeIndex) {
+        activeIndex = index;
+        const allLines = document.querySelectorAll('.lyric-line');
+        
+        allLines.forEach(line => line.classList.remove('active'));
+
+        if (index >= 0 && allLines[index]) {
+          allLines[index].classList.add('active');
+          
+          const boxHeight = document.querySelector('.lyric-box').clientHeight;
+          const lineHeight = allLines[index].offsetHeight;
+          const offset = allLines[index].offsetTop - boxHeight / 2 + lineHeight / 2;
+          scrollEl.style.transform = `translateY(-${offset}px)`;
+        }
+      }
+    }
+
+    // 更新水平进度条
+    function updateProgress() {
+      const percent = (audio.currentTime / audio.duration) * 100 || 0;
+      progressBar.style.width = percent + '%';
+    }
+
+    // 播放/暂停切换
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play().catch(() => {});
+      } else {
+        audio.pause();
+      }
+    }
+
+    // 播放状态同步：按钮文字 + 光盘旋转
+    function syncPlayState() {
+      if (audio.paused) {
+        playBtn.textContent = '播放';
+        cdDisc.classList.remove('playing');
+      } else {
+        playBtn.textContent = '暂停';
+        cdDisc.classList.add('playing');
+      }
+    }
+
+    // 初始化
+    renderLyrics();
+    audio.addEventListener('timeupdate', () => {
+      updateLyric();
+      updateProgress();
+    });
+    playBtn.addEventListener('click', togglePlay);
+    audio.addEventListener('play', syncPlayState);
+    audio.addEventListener('pause', syncPlayState);
+  </script>
 </body>
-
 </html>
